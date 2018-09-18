@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import List from './List';
+import NewListForm from './NewListForm';
 
 class ListContainer extends Component {
   constructor(props){
@@ -12,10 +14,21 @@ class ListContainer extends Component {
   componentDidMount() {
     axios.get('http://localhost:3001/api/v1/lists.json')
     .then((result) => {
-      console.log(result.data)
+      // console.log(result.data)
       this.setState({
         lists: result.data
       })
+    }).catch((err) => {
+      console.log(err)
+    });
+  }
+
+  addNewList = (title, excerpt) => {
+    axios.post('/api/v1/lists', { list: {title, excerpt} })
+    .then((result) => {
+      console.log(result)
+      const lists = [ ...this.state.lists, response.data ]
+      this.setState({lists})
     }).catch((err) => {
       console.log(err)
     });
@@ -26,12 +39,10 @@ class ListContainer extends Component {
       <div className="list-container">
         {this.state.lists.map (list => {
           return(
-            <div className="single-list" key={list.id}>
-              <h4>{list.title}</h4>
-              <p>{list.excerpt}</p>
-            </div>
+            <List list={list} key={list.id}/>
           )
         })}
+        <NewListForm onNewList={this.addNewList} />
       </div>
     )
   }
