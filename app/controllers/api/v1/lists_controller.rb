@@ -37,6 +37,12 @@ module Api::V1
     # DELETE /lists/1
     def destroy
       @list.destroy
+      #Lists Controller for ehe DELETE action
+      if @list.destroy
+        head :no_content, status: :ok
+      else
+        render json @list.errors, status: :unprocessable_entity
+      end
     end
 
     private
