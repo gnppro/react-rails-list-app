@@ -1,4 +1,4 @@
-Module API::V1
+module Api::V1
   class ListsController < ApplicationController
     before_action :set_list, only: [:show, :update, :destroy]
 
