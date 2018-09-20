@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import List from './List';
-import NewListForm from './NewListForm';
-import EditListForm from './EditListForm';
+import NewListForm from './NewListForm'
+import EditListForm from './EditListForm'
 
 class ListContainer extends Component {
   constructor(props){
@@ -14,7 +14,7 @@ class ListContainer extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:3001/api/v1/lists.json')
+    axios.get('http://localhost:3001/api/v1/lists/')
     .then((result) => {
       console.log(result.data)
       this.setState({
@@ -26,10 +26,10 @@ class ListContainer extends Component {
   }
 
   addNewList = (title, excerpt) => {
-    axios.post('/api/v1/lists', { list: {title, excerpt} })
+    axios.post('http://localhost:3001/api/v1/lists/', { list: {title, excerpt} })
     .then((result) => {
       console.log(result)
-      const lists = [ ...this.state.lists, response.data ]
+      const lists = [ ...this.state.lists, result.data ]
       this.setState({lists})
     }).catch((err) => {
       console.log(err)
@@ -37,7 +37,7 @@ class ListContainer extends Component {
   }
 
   removeList = (id) => {
-    axios.delete('api/v1/lists' + id)
+    axios.delete('http://localhost:3001/api/v1/lists/' + id)
     .then((result) => {
       const lists = this.state.lists.filter(
         list => list.id !== id
@@ -55,7 +55,7 @@ class ListContainer extends Component {
   }
 
   editList = (id, title, excerpt) => {
-    axios.put('/api/v1/lists' + id, {
+    axios.put('http://localhost:3001/api/v1/lists/' + id, {
       list: {
         title,
         excerpt
@@ -93,6 +93,7 @@ class ListContainer extends Component {
               />)
           }
         })}
+
         <NewListForm onNewList={this.addNewList} />
       </div>
     )
